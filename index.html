@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Node Website</title>
+</head>
+<body>
+    <form id="calcForm">
+        <button type="submit">Calculate Primes</button>
+    </form>
+    <p id="response"></p>
+
+    <script>
+        document.getElementById('calcForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            document.getElementById('response').innerText = 'Calculating prime numbers...';
+
+            fetch('/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams(new FormData(event.target))
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('response').innerText = data;
+            })
+            .catch(error => {
+                document.getElementById('response').innerText = 'Error: ' + error;
+            });
+        });
+    </script>
+</body>
+</html>
